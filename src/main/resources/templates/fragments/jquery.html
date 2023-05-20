@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<script th:fragment="jquery">
+	$(document).ready(function(){
+		
+		// Catch Message  
+		let title = $("input[name='msg_title']").attr("msg_title");
+		let body = $("input[name='msg_body']").attr("msg_body");
+		if(title && body){
+			$("#errorModalTitle").text(title);
+			$("#errorModalBody").text(body);
+			$("#errorModal").modal("show");
+		}
+		
+		$(".room").click(function(){
+			const attr = selector($(this));
+			const roomId = attr("room-id");
+			const lendFlag = attr("lend-flag");
+			const checkout = attr("checkout");
+			const bookingId = attr("book-id")
+			const roomNumber = attr("room-number");
+			
+			if(lendFlag == 0){
+				const inputElement = selector($("input[name='roomId']"));
+				const oldSelectedId = inputElement().val();
+				let childDiv = selector($(`div[room-id=${roomId}] > div`));
+				const createBookingBtn = selector( $("#createBookingBtn") );
+				// Has old selected
+				if(oldSelectedId){
+					// Toggle 
+					if(oldSelectedId == roomId){
+						childDiv("css","background-color","white");
+						inputElement().val("");
+						$("input[name='roomNumber']").val("");
+						createBookingBtn("disabled",true);
+					}else{
+						// Release selected old room
+						let oldRoomElement = selector($(`div[room-id=${oldSelectedId}] > div`));
+						oldRoomElement("css","background-color","white");
+						
+						// Select New Room
+						childDiv("css","background-color","#09E745");
+						inputElement().val(roomId);
+						$("input[name='roomNumber']").val(roomNumber);
+					}
+				}else{
+					childDiv("css","background-color","#09E745");
+					inputElement().val(roomId);
+					$("input[name='roomNumber']").val(roomNumber);
+					createBookingBtn("disabled",false);
+				}
+				
+			}else if(checkout==1){
+				// text injection to modal's body
+				$("#bookCancelModalBody").text(roomNumber +"の予約をキャンセルします、よろしいでしょうか？");
+				
+				// wakeup modal
+				$("#bookCancelModal").modal("show");
+				
+				// set val to modal's input field
+				$("input[name='cancelRoomId']").val(roomId);
+				$("input[name='bookingId']").val(bookingId);
+			}
+		});
+		
+		// Model close Handler
+		
+		$(".bookCancelModalClose").click(function(){
+			$("#bookCancelModalBody").text("");
+			$("input[name='cancelRoomId']").val('');
+			$("#bookCancelModal").modal("hide");			
+		})
+		
+		$(".errorModalClose").click(function(){
+			$("#errorModalTitle").text("");
+			$("#errorModalBody").text("");
+			$("#errorModal").modal("hide");
+		})
+		
+	});
+</script> 	
+</html>

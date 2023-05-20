@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlie.shop.repository.ShopMapper">
+	<resultMap type="com.onlie.shop.entity.ItemEntity" id="itemResultMap">
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+		<result column="price" property="price"></result>
+		<result column="photo_url" property="photoUrl"></result>
+		<result column="category_id" property="categoryId"></result>
+	</resultMap>
+	
+	<select id="getAllItem" resultMap="itemResultMap">
+		SELECT * FROM items
+	</select>
+</mapper>
