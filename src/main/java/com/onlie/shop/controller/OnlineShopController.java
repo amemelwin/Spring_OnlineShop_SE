@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.onlie.shop.form.OrderConfirmForm;
 import com.onlie.shop.form.OrderForm;
 import com.onlie.shop.service.ShopService;
 
@@ -38,12 +39,15 @@ public class OnlineShopController {
 	}
 	
 	@PostMapping("/order/create")
-	public String createOrder(@ModelAttribute OrderForm orderList) {
-		try {
-			System.out.println(orderList.toList());
+	public String createOrder(@ModelAttribute OrderConfirmForm orderConfirmForm) {
+	OrderForm orderForm = new OrderForm();
+	orderForm.setOrderList(orderConfirmForm.getOrderList());
+	try {
+			System.out.println(orderForm.toList());
 		}catch(Exception e) {
 			return "screens/order";
 		}
+		System.out.println(orderConfirmForm);
 		return "redirect:/";
 	}
 	
