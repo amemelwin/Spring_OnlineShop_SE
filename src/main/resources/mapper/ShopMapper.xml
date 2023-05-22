@@ -9,7 +9,32 @@
 		<result column="category_id" property="categoryId"></result>
 	</resultMap>
 	
-	<select id="getAllItem" resultMap="itemResultMap">
-		SELECT * FROM items
+	<resultMap type="com.onlie.shop.entity.DivisionEntity" id="divisionResultMap">
+		<id column="id" property="id"></id>
+		<result column="name" property="name"></result>
+	</resultMap>
+	
+	<resultMap type="com.onlie.shop.entity.OrderEntity" id="orderResultMap">
+		<id column="id" property="id"></id>
+		<result column="receiver_name" property="receiverName"></result>
+		<result column="receiver_phone" property="receiverPhone"></result>
+		<result column="receiver_address" property="receiverAddress"></result>
+		<result column="user_id" property="userId"></result>
+		<result column="division_id" property="divisionId"></result>
+	</resultMap>
+	
+	<select id="getAllDivision" resultMap="divisionResultMap">
+		SELECT * FROM divisions;
 	</select>
+	
+	<select id="getAllItem" resultMap="itemResultMap">
+		SELECT * FROM items;
+	</select> 
+	<!-- #{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId} --> 
+	<select id="createOrder" resultType="int" >
+		SELECT MAX(id)+1 FROM orders;
+		INSERT INTO orders (id,receiver_name,receiver_phone,receiver_address,user_id,division_id)
+		VALUES
+		((SELECT MAX(id) FROM orders)+1,'Maw','093784','Mawlamyine',1,3);
+	</select>	
 </mapper>

@@ -32,6 +32,9 @@ Create Table divisions (
 );
 Create Table orders (
 	id SERIAL NOT NULL,
+	receiver_name varchar(50) NOT NULL,
+	receiver_phone varchar(199) NOT NULL,
+	receiver_address text NOT NULL,
 	user_id int,
  	division_id int,
 	created_at timestamp Default now(),
@@ -88,10 +91,10 @@ VALUES
 ('cosmetic'),
 ('mobile');
 
-INSERT INTO orders(user_id,division_id)
+INSERT INTO orders(receiver_name,receiver_phone,receiver_address,user_id,division_id)
 VALUES
-(1,2),
-(2,3);
+('Amie','09421298939','Yangon',1,2),
+('Su','098655635','Mandalay',2,3);
 
 INSERT INTO items(name,price,photo_url,category_id)
 VALUES

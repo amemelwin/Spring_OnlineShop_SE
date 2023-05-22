@@ -4,20 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.onlie.shop.form.OrderForm;
 import com.onlie.shop.service.ShopService;
 
 import jakarta.annotation.PostConstruct;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@Slf4j
 public class OnlineShopController {
 	@Autowired
 	ShopService shopService;
 	
 	@PostConstruct
 	public void init() {
+		System.out.println(this.shopService.createOrder());
 //		log.info("Hello");
 //		System.out.println(this.shopService.getAllItem());
 	}
@@ -28,6 +30,22 @@ public class OnlineShopController {
 		return "screens/index";
 	}
 	
+	@GetMapping("/order/create")
+	public String createOrder(@ModelAttribute OrderForm orderList,Model model) {
+		model.addAttribute("orderList",orderList.getOrderList());
+		model.addAttribute("divisionList",this.shopService.getAllDivision());
+		return "screens/order";
+	}
+	
+	@PostMapping("/order/create")
+	public String createOrder(@ModelAttribute OrderForm orderList) {
+		try {
+			System.out.println(orderList.toList());
+		}catch(Exception e) {
+			return "screens/order";
+		}
+		return "redirect:/";
+	}
 	
 	
 

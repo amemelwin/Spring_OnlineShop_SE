@@ -5,17 +5,112 @@
   <head th:replace="fragments/common :: head('Online Shopping System')" ></head>
 
   <body>
-	  <div class="mx-auto container">	  
-	  	<div class="row g-5 ">	    
-			<div class="card col-4" th:each="item:${items}" th:object="${item}">
-		    	<img th:src="@{*{photoUrl} }" class="card-img-top" alt="Card image cap">
-			    <div class="card-body">
-			      <h5 class="card-title">Card title</h5>
-			      <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-			      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-		    	</div>
-		  	</div>  	
-	  	</div>  
-	  </div>
+  	  <div class="text-center py-5 bg-secondary">Header</div>
+  	  
+  	  <div class="mx-auto w-75 mt-5 ">
+	  	  <form th:action="@{/order/create}">
+	  	  	<input type="hidden" name="orderList" id="cartList" value="[]">
+	  	  	<button type="submit" class="btn btn-outline position-relative">
+	  	  		<i class="bi bi-cart3 h2"></i>
+	  	  		<span id="cartItemCount" class="badge badge-pill bg-warning position-absolute font-weight-bold" style="border-radius:20px;right:0px;top:5px;">0</span>
+			</button>
+	  	  </form>
+  	    	  
+  	  </div>
+	  <div class="mx-auto w-75 mt-5">	  
+	  	<div class="row g-5">
+	  		<div class="col-3" th:each="item:${items}" th:object="${item}">
+	  			<div class="card" > 
+			    	<img th:src="@{*{photoUrl} }" class="card-img-top img-fluid" style="height:200px;width:auto;" alt="Card image cap">
+				    <div class="card-body">
+				      <h5 class="card-title" th:text="*{#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')+' Ks'}"></h5>
+				      <p class="card-text" style="height:50px;overflow:hidden;" th:text="*{name}"></p>
+			    	</div>
+				  	<div class="card-footer d-flex flex-row justify-content-center items-center">
+					  	<button class="btn btn-outline minus" th:itemId="*{id}" ><i class="bi bi-dash-square"></i></button>				  		
+					  	<div th:itemQtyId="*{id}" class="btn" >0</div>
+					  	<button class="btn btn-outline plus" th:itemId="*{id}" th:itemName="*{name}" th:itemPrice="*{price}"><i class="bi bi-plus-square"></i></button>	
+				  	</div>	
+			  	</div>
+	  		</div>  
+	  </div>  
+	 </div>
+	 <script>
+	 	$(document).ready(function(){
+	 		$(".minus").click(function(){
+				const itemId = $(this).attr("itemId");
+				const qtyDiv = $(`div[itemQtyId='${itemId}']`);
+				
+				const updatedQty = parseInt(qtyDiv.text())-1;
+				
+				if(qtyDiv.text()>0){
+					let cartListDiv = $("#cartList");
+		 			let cartList = JSON.parse(cartListDiv.val());
+		 			
+		 			let updatedCartList;
+		 			if(qtyDiv.text() == 1){ // remove from list
+		 				updatedCartList = cartList.filter((item)=>item.id != itemId)
+		 			}else{
+		 				updatedCartList = cartList.map((item)=>{
+		 					if(item.id == itemId){
+		 						return {...item,qty:updatedQty}
+		 					}else{
+		 						return item;
+		 					}
+		 					
+		 				})
+		 			}
+					// update input
+					cartListDiv.val( JSON.stringify(updatedCartList) );
+					
+					// qty text update
+					qtyDiv.text( updatedQty );
+					
+					//badges update
+		 			$("#cartItemCount").text(updatedCartList.length);
+				 }
+	 		});
+	 		
+	 		$(".plus").click(function(){
+	 			const itemId = $(this).attr("itemId");
+	 			const itemName = $(this).attr("itemName");
+	 			const itemPrice = $(this).attr("itemPrice");
+	 			const qtyDiv = $(`div[itemQtyId='${itemId}']`);
+	 			const updatedQty = parseInt(qtyDiv.text())+1;
+	 			
+	 			let cartListDiv = $("#cartList");
+	 			let cartList = JSON.parse(cartListDiv.val());
+	 			
+	 			let updatedCartList;
+	 			if(qtyDiv.text() == 0){
+	 				const item = {
+	 						id: parseInt(itemId),
+	 						name: itemName,
+	 						price: parseInt(itemPrice),
+	 						qty: updatedQty
+	 				}
+	 				updatedCartList = [...cartList,item];
+	 			}else{
+	 				updatedCartList = cartList.map((item)=> {
+	 					if(item.id == itemId){
+	 						return {...item,qty: updatedQty};
+	 					}else{
+	 						return item;
+	 					}
+	 				})
+	 			}
+	 			
+	 			// update input 
+	 			cartListDiv.val( JSON.stringify( updatedCartList ) );
+	 			
+	 			// qty text update
+	 			qtyDiv.text( updatedQty );
+	 			
+	 			//badges update
+	 			$("#cartItemCount").text(updatedCartList.length);
+	 		});
+	 		
+	 	});
+	 </script>
   </body>
 </html>
