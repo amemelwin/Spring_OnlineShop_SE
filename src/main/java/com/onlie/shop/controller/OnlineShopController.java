@@ -51,7 +51,19 @@ public class OnlineShopController {
 	public String createOrder(@ModelAttribute OrderConfirmForm orderConfirmForm) {
 	// Default user before finish Auth
 	orderConfirmForm.setUserId(1);
+<<<<<<< HEAD
 	this.shopService.createOrder(orderConfirmForm);
+=======
+//	OrderForm orderForm = new OrderForm();
+//	orderForm.setOrderList(orderConfirmForm.getOrderList());
+	this.shopService.createOrder(orderConfirmForm);
+//	try {
+//			System.out.println(orderForm.toList());
+//		}catch(Exception e) {
+//			return "screens/order";
+//		}
+		//System.out.println(orderConfirmForm);
+>>>>>>> 023f88ee0c2f889d4bb3983421babd611a9281e0
 		return "redirect:/";
 	}
 	

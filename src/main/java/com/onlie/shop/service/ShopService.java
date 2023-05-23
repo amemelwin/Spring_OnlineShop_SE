@@ -26,6 +26,7 @@ public class ShopService {
 	}
 	
 	@Transactional
+<<<<<<< HEAD
 	public void createOrder(OrderConfirmForm orderConfirmForm) {
 		int orderId = this.shopMapper.createOrder(orderConfirmForm);
 		System.out.println(orderId);
@@ -33,6 +34,12 @@ public class ShopService {
 			// Create Order Table
 			//int orderId = this.shopMapper.createOrder(orderConfirmForm);
 			System.out.println(orderId);
+=======
+	public void createOrder(OrderConfirmForm orderConfirmForm) {		
+		try {
+			// Create Order Table
+			int orderId = this.shopMapper.createOrder(orderConfirmForm);
+>>>>>>> 023f88ee0c2f889d4bb3983421babd611a9281e0
 			
 			// Prepare
 			OrderForm orderForm = new OrderForm();			
