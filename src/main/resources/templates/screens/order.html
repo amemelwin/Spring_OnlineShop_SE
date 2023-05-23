@@ -5,10 +5,11 @@
   <head th:replace="fragments/common :: head('Create Order')" ></head>
 
   <body>
-  	  <div class="text-center py-5 bg-secondary">Order</div>
+  	   <!-- Header -->
+	  <div th:replace="fragments/header :: header"></div>  
   	  
   	  <!-- redirect hoem -->
-  	  <form th:action="@{/}">
+  	  <form th:action="@{/}" class="my-5">
   	  	<button type="submit" id="home" class="btn btn-outline"></button>
   	  </form>
   	  
@@ -89,30 +90,23 @@
   	  			
   	  		});
   	  	    $(".total").text( orderList.reduce((total,{qty,price})=>total+(qty*price),0).toLocaleString() );	
-  	  		tableBody.html(html);
+  	  		$("#qty").text(orderList.length);
+  	  	    tableBody.html(html);
   	  	}
-  	  	//const addOrderInfo = ()=>{
-  	  	//	let orderList1 = JSON.parse( $("input[name='orderList']").val() );
-  	  	//	let updatedOrderList=orderList1.map((item)=> {
-  	  	//		return item;
-  	  	//	});
-  	  	//	orderRowInject(updatedOrderList);
-  	  		
-  	  	//}
-  	  	const minusQty = (minusId)=>{
-  	  		let [{id,name,price,qty}] = JSON.parse( $("input[name='orderList']").val() ).filter( (item)=> item.id==minusId );
-  	  		let orderList = JSON.parse( $("input[name='orderList']").val() );
-  	  		let updatedOrderList;
-  	  		if(qty==1){ // remove item
-  	  			updatedOrderList = orderList.filter((item)=> item.id != id);
-  	  		}else{ // minus qty
-  	  			updatedOrderList = orderList.map((item)=> {
-  	  				if(item.id == id){
-  	  					return {id,name,price,qty:qty-1};
-  	  				}else{
-  	  					return item;
-  	  				}
-  	  			})
+   	  	const minusQty = (minusId)=>{
+	  		let [{id,name,price,qty}] = JSON.parse( $("input[name='orderList']").val() ).filter( (item)=> item.id==minusId );
+	  		let orderList = JSON.parse( $("input[name='orderList']").val() );
+	  		let updatedOrderList;
+	  		if(qty==1){ // remove item
+	  			updatedOrderList = orderList.filter((item)=> item.id != id);
+ 	  		}else{ // minus qty
+ 	  			updatedOrderList = orderList.map((item)=> {
+ 	  				if(item.id == id){
+ 	  					return {id,name,price,qty:qty-1};
+ 	  				}else{
+ 	  					return item;
+ 	  				}
+ 	  			})
   	  		}
   	  		// Redirect Home page when there is no item
   	  		if(updatedOrderList.length === 0){  	  			
@@ -121,7 +115,6 @@
   	  		}
   	  		// Update table
   	  		tableInject(updatedOrderList);
-  	  		//addOrderInfo(updatedOrderList);
   	  		
   	  		// Update Input
   	  		$("input[name='orderList']").val( JSON.stringify(updatedOrderList) );

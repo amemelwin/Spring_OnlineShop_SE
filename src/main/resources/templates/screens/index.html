@@ -3,10 +3,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
   <head th:replace="fragments/common :: head('Online Shopping System')" ></head>
-
+	
   <body>
-  	  <div class="text-center py-5 bg-secondary">Header</div>
-  	  
+  	  <!-- Header -->
+	  <div th:replace="fragments/common :: header(Auth=${Auth})"></div>  
+	  <div class="my-5">asaa</div>	  
   	  <div class="mx-auto w-75 mt-5 ">
 	  	  <form th:action="@{/order/create}">
 	  	  	<input type="hidden" name="orderList" id="cartList" value="[]">

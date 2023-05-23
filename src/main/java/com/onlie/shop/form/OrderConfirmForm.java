@@ -9,5 +9,6 @@ public class OrderConfirmForm {
 	private String receiverAddress;
 	private int divisionId;
 	private String orderList;
+	private int userId;
 
 }

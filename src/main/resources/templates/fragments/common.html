@@ -22,74 +22,28 @@
 </head>
 <body>
  	<!-- Header -->
- 	<div th:fragment="header(Auth)" class="py-3" style="background-color:#E2F0FF">
-		<div class="mx-auto w-50 d-flex flex-row justify-content-between text-light ">
-			<div class="h4 text-dark">部屋の予約</div>
-			<div class="d-flex flex-row ">
-				<a href="" class="text-decoration-none mx-5 ">部屋一覧</a>
-				<div th:if="${Auth}" class="text-dark" th:text="${Auth.username}"></div>
-				<a th:if="${param.query != 'http://localhost:8080/login'}" th:href="@{/login}" th:unless="${Auth}" class="text-decoration-none text-dark" style="cursor:pointer">ログイン</a>
-				<a th:if="${Auth}"  th:href="@{/logout}" class="text-decoration-none mx-2"><i class="bi bi-box-arrow-right h5 mx-3 text-[#4083be]" style=""></i></a>
-			</div>
-		</div>
-	</div>
- 	
- 	<!-- Footer -->
- 	<div th:fragment="footer(left,right)" class="py-3 bg-dark text-light" style="position: fixed; bottom: 0; width: 100%">
- 		<div class="container d-flex flex-row justify-content-between">
- 			<div th:text="${left}"></div>
- 			<div th:text="${right}"></div>
+	<div th:fragment="header(Auth)" class="bg-dark text-light fixed-top mb-5">
+ 		<div class="mx-auto w-75 py-4 d-flex flex-row justify-content-between">	
+	 		<div>Shopify</div>
+	 		<div class="d-flex flex-row items-center">
+	 			<a th:href="@{/}" class="mx-3 text-light my-auto" style="text-decoration: none;">Home</a>
+	 			<a th:href="@{/order}" class="mx-3 text-light my-auto" style="text-decoration: none;">Order</a>
+	 			<form th:action="@{/order/create}" class="mx-3 ">
+		  	  		<input type="hidden" name="orderList" id="cartList" value="[]">
+			  	  	<button type="submit" class="btn btn-outline position-relative ">
+			  	  		<i class="bi bi-cart3 h4 text-white"></i>
+			  	  		<span id="cartItemCount" class="position-absolute start-100 translate-middle badge rounded-pill bg-danger">
+		    				0
+		  				</span>
+					</button>
+		  	  	</form>
+  				<div th:if="${Auth}" class="text-light mx-3 my-auto"  th:text="${Auth.username}"></div>
+ 				<a th:href="@{/login}" th:if="!${Auth}" class="text-light mx-3 my-auto" style="text-decoration: none;">Log In</a>
+	 		</div> 		
+	 		
  		</div>
  	</div>
  	
- 	<!-- Modal -->
  	
- 	<!-- Catch From Message Delivery -->
-	<input type="hidden" name="msg_title" th:msg_title="${msg_title}"/>
-	<input type="hidden" name="msg_body" th:msg_body="${msg_body}"/>
- 	
- 	<!-- Booking Cancel Modal -->
- 	<div th:fragment="bookCancelModal" class="modal fade" id="bookCancelModal" tabindex="-1" role="dialog" aria-labelledby="bookCancelModal" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered "  role="document">
-	    <div class="modal-content" style="border-radius:20px">
-	      <div class="modal-header d-flex flex-row justify-content-between">
-	        <div class="modal-title text-center h4 col-11" id="exampleModalCenterTitle"><div>部屋予約キャンセル</div></div>
-	       	<div class="col-1">
-		       	<div class="bookCancelModalClose" style="cursor:pointer;"><i class="bi bi-x h1" ></i></div>
-	       	</div>
-	      </div>
-	      <div class="modal-body text-center my-3" id="bookCancelModalBody">
-	        <!-- Error Msg injection here -->
-	      </div>
-	      <form th:action="@{/booking/cancel}" method="post" class="modal-footer d-flex flex-row justify-content-center">
-	      	<input name="cancelRoomId" type="hidden">
-	      	<input name="bookingId" type="hidden">
-	        <button type="submit" class="btn btn-primary px-5" style="border-radius: 10px;" data-dismiss="modal">OK</button>
-	      </form>
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- Error Modal -->
-	<div th:fragment="errorModal" class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModal" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered "  role="document">
-	    <div class="modal-content" style="border-radius:20px">
-	      <div class="modal-header d-flex flex-row justify-content-between">
-	        <div class="modal-title text-center h4 col-11">
-	        	<div  id="errorModalTitle">
-	        		<!-- Title injection here -->
-	        	</div>
-	        </div>
-	       	<div class="col-1">
-		       	<div class="errorModalClose" style="cursor:pointer;"><i class="bi bi-x h1" ></i></div>
-	       	</div>
-	      </div>
-	      <div class="modal-body text-center my-3" id="errorModalBody">
-	        <!-- Error Msg injection here -->
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
 </body>
 </html>
