@@ -2,11 +2,17 @@ package com.onlie.shop.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionInterceptor;
 
 import com.onlie.shop.entity.DivisionEntity;
 import com.onlie.shop.entity.ItemEntity;
+import com.onlie.shop.form.OrderConfirmForm;
+import com.onlie.shop.form.OrderForm;
+import com.onlie.shop.model.ItemOrderModel;
 import com.onlie.shop.repository.ShopMapper;
 
 @Service
@@ -19,13 +25,34 @@ public class ShopService {
 		return this.shopMapper.getAllItem();
 	}
 	
-	public int createOrder() {
-		return this.shopMapper.createOrder();
+	@Transactional
+	public void createOrder(OrderConfirmForm orderConfirmForm) {		
+		try {
+			// Create Order Table
+			int orderId = this.shopMapper.createOrder(orderConfirmForm);
+			
+			// Prepare
+			OrderForm orderForm = new OrderForm();			
+			orderForm.setOrderList(orderConfirmForm.getOrderList());
+			
+			// Create Order Detail Table
+			for(ItemOrderModel orderDetail: orderForm.toList()) {
+				this.shopMapper.createOrderDetail(orderDetail.getQty(), orderId, orderDetail.getId());
+				//System.out.print(orderDetail);
+			}
+		}catch(Exception e) {
+			TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
+			System.out.println("error");
+		}
+		//System.out.println(orderId);
+		 
 	}
 	
 	public List<DivisionEntity> getAllDivision(){
 		return this.shopMapper.getAllDivision();
 	}
+	
+
 	
 	
 

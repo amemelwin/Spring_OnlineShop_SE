@@ -20,7 +20,7 @@ public class OnlineShopController {
 	
 	@PostConstruct
 	public void init() {
-		System.out.println(this.shopService.createOrder());
+//		System.out.println(this.shopService.createOrder());
 //		log.info("Hello");
 //		System.out.println(this.shopService.getAllItem());
 	}
@@ -40,14 +40,17 @@ public class OnlineShopController {
 	
 	@PostMapping("/order/create")
 	public String createOrder(@ModelAttribute OrderConfirmForm orderConfirmForm) {
-	OrderForm orderForm = new OrderForm();
-	orderForm.setOrderList(orderConfirmForm.getOrderList());
-	try {
-			System.out.println(orderForm.toList());
-		}catch(Exception e) {
-			return "screens/order";
-		}
-		System.out.println(orderConfirmForm);
+	// Default user before finish Auth
+	orderConfirmForm.setUserId(1);
+//	OrderForm orderForm = new OrderForm();
+//	orderForm.setOrderList(orderConfirmForm.getOrderList());
+	this.shopService.createOrder(orderConfirmForm);
+//	try {
+//			System.out.println(orderForm.toList());
+//		}catch(Exception e) {
+//			return "screens/order";
+//		}
+		//System.out.println(orderConfirmForm);
 		return "redirect:/";
 	}
 	

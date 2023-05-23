@@ -44,6 +44,12 @@
 		SELECT MAX(id)+1 FROM orders;
 		INSERT INTO orders (id,receiver_name,receiver_phone,receiver_address,user_id,division_id)
 		VALUES
-		((SELECT MAX(id) FROM orders)+1,'Su4','098678','yangon',1,2);
+		((SELECT MAX(id) FROM orders)+1,#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId});
 	</select>	
+	
+	<insert id="createOrderDetail">
+		INSERT INTO order_details (quantity,order_id,item_id)
+		VALUES
+		(#{qty},#{orderId},#{itemId});
+	</insert>
 </mapper>
