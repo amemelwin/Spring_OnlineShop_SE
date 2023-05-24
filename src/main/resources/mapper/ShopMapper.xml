@@ -41,9 +41,9 @@
 		((SELECT MAX(id) FROM orders)+1,#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId});
 	</select> -->
 	<select id="getAuthUser" resultMap="userResultMap">
-		SELECT id,username,email 
+		SELECT id,username,email,role_id
 		FROM users 
-		WHERE email=#{email} AND password=#{password} AND role_id=2;
+		WHERE email=#{email} AND password=#{password};
 	</select>
 
 	<select id="getAllDivision" resultMap="divisionResultMap">

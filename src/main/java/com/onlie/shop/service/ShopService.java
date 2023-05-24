@@ -44,13 +44,11 @@ public class ShopService {
 			// Create Order Detail Table
 			for(ItemOrderModel orderDetail: orderForm.toList()) {
 				this.shopMapper.createOrderDetail(orderDetail.getQty(), orderId, orderDetail.getId());
-				//System.out.print(orderDetail);
 			}
 		}catch(Exception e) {
 			TransactionInterceptor.currentTransactionStatus().setRollbackOnly();
 			System.out.println("error");
 		}
-		//System.out.println(orderId);
 		 
 	}
 	

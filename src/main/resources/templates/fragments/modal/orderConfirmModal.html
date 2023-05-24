@@ -10,7 +10,7 @@
         <button type="button" class="col-1 btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      	 <form role="form" method="POST" th:action="@{/order/create}" >
+      	 <form role="form" method="POST" th:action="@{/order/confirm}" >
       	 	<input type="hidden" name="orderList" th:value="${orderList}">
       		<div class="d-flex flex-row justify-content-between my-3">
   	  			<div class="col-3 ">Item</div>

@@ -9,14 +9,6 @@
 	  <div th:replace="fragments/common :: header(Auth=${Auth})"></div>  
 	  <div class="my-5">asaa</div>	  
   	  <div class="mx-auto w-75 mt-5 ">
-	  	  <form th:action="@{/order/create}">
-	  	  	<input type="hidden" name="orderList" id="cartList" value="[]">
-	  	  	<button type="submit" class="btn btn-outline position-relative">
-	  	  		<i class="bi bi-cart3 h2"></i>
-	  	  		<span id="cartItemCount" class="badge badge-pill bg-warning position-absolute font-weight-bold" style="border-radius:20px;right:0px;top:5px;">0</span>
-			</button>
-	  	  </form>
-  	    	  
   	  </div>
 	  <div class="mx-auto w-75 mt-5">	  
 	  	<div class="row g-5">
