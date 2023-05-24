@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.onlie.shop.entity.UserEntity;
+import com.onlie.shop.form.LoginForm;
 import com.onlie.shop.form.OrderConfirmForm;
 import com.onlie.shop.form.OrderForm;
 import com.onlie.shop.service.ShopService;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class OnlineShopController {
@@ -26,11 +29,20 @@ public class OnlineShopController {
 	}
 	
 	@GetMapping("/login")
-	public String login() {
+	public String login(Model model) {
+		LoginForm loginForm  = new LoginForm();
+		model.addAttribute("loginForm",loginForm);
 		return "screens/login";
 	}
+	
+	@PostMapping("/login")
+	public String login(Model model,HttpSession session) {
+		System.out.println(this.shopService.getAuthUser("mama@gmail.com", "1234"));
+		return "redirect:/";
+	}
+	
 	@GetMapping("/signup")
-	public String signup() {
+	public String signup() {		
 		return "screens/signup";
 	}
 	
@@ -51,19 +63,8 @@ public class OnlineShopController {
 	public String createOrder(@ModelAttribute OrderConfirmForm orderConfirmForm) {
 	// Default user before finish Auth
 	orderConfirmForm.setUserId(1);
-<<<<<<< HEAD
 	this.shopService.createOrder(orderConfirmForm);
-=======
-//	OrderForm orderForm = new OrderForm();
-//	orderForm.setOrderList(orderConfirmForm.getOrderList());
-	this.shopService.createOrder(orderConfirmForm);
-//	try {
-//			System.out.println(orderForm.toList());
-//		}catch(Exception e) {
-//			return "screens/order";
-//		}
-		//System.out.println(orderConfirmForm);
->>>>>>> 023f88ee0c2f889d4bb3983421babd611a9281e0
+
 		return "redirect:/";
 	}
 	

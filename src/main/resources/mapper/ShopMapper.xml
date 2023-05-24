@@ -8,6 +8,15 @@
 		<result column="photo_url" property="photoUrl"></result>
 		<result column="category_id" property="categoryId"></result>
 	</resultMap>
+
+	<resultMap type="com.onlie.shop.entity.UserEntity" id="userResultMap" >
+		<id column="id" property="id" ></id>
+		<result column="username" property="username" />
+		<result column="email" property="email" />		
+		<result column="password" property="password" />		
+		<result column="address" property="address" />		
+		<result column="role_id" property="roleId" />		
+	</resultMap>
 	
 	<resultMap type="com.onlie.shop.entity.DivisionEntity" id="divisionResultMap">
 		<id column="id" property="id"></id>
@@ -31,7 +40,12 @@
 		VALUES
 		((SELECT MAX(id) FROM orders)+1,#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId});
 	</select> -->
-	
+	<select id="getAuthUser" resultMap="userResultMap">
+		SELECT id,username,email 
+		FROM users 
+		WHERE email=#{email} AND password=#{password} AND role_id=2;
+	</select>
+
 	<select id="getAllDivision" resultMap="divisionResultMap">
 		SELECT * FROM divisions;
 	</select>

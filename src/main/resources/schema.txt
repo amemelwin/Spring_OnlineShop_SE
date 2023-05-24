@@ -74,10 +74,10 @@ VALUES
 ('admin'),
 ('customer');
 
-INSERT INTO users(username,email,password,address)
+INSERT INTO users(username,email,password,address,role_id)
 VALUES
-('Ma Ma','mama@gmail.com','1234','Hlaing Thar Yar'),
-('Mg Mg','mgmg@gmail.com','1234','Inn Sein');
+('Ma Ma','mama@gmail.com','1234','Hlaing Thar Yar',2),
+('Mg Mg','mgmg@gmail.com','1234','Inn Sein',2);
 
 INSERT INTO divisions(name)
 VALUES

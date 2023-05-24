@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.onlie.shop.entity.DivisionEntity;
 import com.onlie.shop.entity.ItemEntity;
+import com.onlie.shop.entity.UserEntity;
 import com.onlie.shop.form.OrderConfirmForm;
 
 @Mapper
@@ -16,8 +17,8 @@ public interface ShopMapper {
 	
 	public List<DivisionEntity> getAllDivision();
 	
+	public UserEntity getAuthUser(@Param("email") String email,@Param("password") String password);
+	
 	public int createOrder(OrderConfirmForm orderConfirmForm);
-	//qty},#{orderId},#{itemId}
 	public void createOrderDetail(@Param("qty") int qty,@Param("orderId") int orderId,@Param("itemId") int itemId);
-//#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId
 }
