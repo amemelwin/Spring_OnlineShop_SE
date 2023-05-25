@@ -78,11 +78,16 @@ public class OnlineShopController {
 	public String createOrder(@ModelAttribute OrderForm orderList,Model model) {
 		model.addAttribute("orderList",orderList.getOrderList());
 		model.addAttribute("divisionList",this.shopService.getAllDivision());
+		// model.addAttribute("has_error","ksjkjskj");  // testing purpose
 		return "screens/order";
 	}
 	
 	@PostMapping("/order/confirm")
 	public String createOrder(@ModelAttribute OrderConfirmForm orderConfirmForm) {
+		// if (result.hasError()){
+		//  model.addAttribute("has_error","error");
+		//  return "screens/order";
+		// }
 	// Default user before finish Auth
 	orderConfirmForm.setUserId(1);
 	this.shopService.createOrder(orderConfirmForm);

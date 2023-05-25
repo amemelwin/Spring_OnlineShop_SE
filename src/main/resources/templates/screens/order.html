@@ -5,6 +5,9 @@
   <head th:replace="fragments/common :: head('Create Order')" ></head>
 
   <body>
+  	   <!-- reciever -->
+  	   <div class="has_error" th:if="${has_error}" th:text="${has_error}"></div>
+  
   	   <!-- Header -->
 	  <div th:replace="fragments/header :: header"></div>  
   	  
@@ -138,6 +141,11 @@
   	  	}
   	  	
   	  	$(document).ready(function(){
+  	  		// to auto call model
+  	  		if( $(".has_error").text() ){
+  	  			$("#staticBackdrop").modal("show");
+  	  		}
+  	  		
   	  		// initail create table
   	  		let orderList = JSON.parse( $("input[name='orderList']").val() );
   	  		if(orderList.length === 0){
