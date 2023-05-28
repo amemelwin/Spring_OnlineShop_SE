@@ -26,7 +26,6 @@ public class OnlineShopController {
 	
 	@PostConstruct
 	public void init() {
-		System.out.println(this.shopService.getUserOrder());
 //		log.info("Hello");
 //		System.out.println(this.shopService.getAllItem());
 	}
@@ -93,21 +92,33 @@ public class OnlineShopController {
 	@PostMapping("/order/confirm")
 	public String createOrder(  @Valid @ModelAttribute OrderConfirmForm orderConfirmForm,BindingResult result,Model model,HttpSession session) {
 	// Default user before finish Auth
-	if(result.hasErrors()) {
-		orderConfirmForm.validate(model, result);
-		OrderConfirmForm orderForm = new OrderConfirmForm();
-		orderForm.setOrderList(orderConfirmForm.getOrderList());
-		orderForm.setDivisionList(this.shopService.getAllDivision());
-		model.addAttribute("orderConfirmForm",orderForm);
-		//model.addAttribute("orderList",orderConfirmForm.getOrderList());
-		//model.addAttribute("divisionList",this.shopService.getAllDivision());
-		return "screens/order";
-	}
-	UserEntity user = (UserEntity)session.getAttribute("Auth");
-	orderConfirmForm.setUserId(user.getId());
-	this.shopService.createOrder(orderConfirmForm);
+		if(result.hasErrors()) {
+			orderConfirmForm.validate(model, result);
+			OrderConfirmForm orderForm = new OrderConfirmForm();
+			orderForm.setOrderList(orderConfirmForm.getOrderList());
+			orderForm.setDivisionList(this.shopService.getAllDivision());
+			model.addAttribute("orderConfirmForm",orderForm);
+			//model.addAttribute("orderList",orderConfirmForm.getOrderList());
+			//model.addAttribute("divisionList",this.shopService.getAllDivision());
+			return "screens/order";
+		}	
+		
+		UserEntity user = (UserEntity)session.getAttribute("Auth");
+		orderConfirmForm.setUserId(user.getId());
+		this.shopService.createOrder(orderConfirmForm);
 		return "redirect:/";
 	}
+	
+	@GetMapping("/order/history")
+	public String orderHistory(Model model,HttpSession session) {
+		UserEntity user = (UserEntity)session.getAttribute("Auth");
+		if(user == null) {
+			return "redirect:/login";
+		}
+		model.addAttribute("orderHistoryList",this.shopService.getUserOrder(user.getId()));
+		return "screens/order_history";
+	}
+	
 	
 	
 

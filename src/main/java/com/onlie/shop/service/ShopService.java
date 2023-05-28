@@ -57,8 +57,8 @@ public class ShopService {
 		return this.shopMapper.getAllDivision();
 	}
 	
-	public List<UserOrderEntity> getUserOrder() {
-		return this.shopMapper.getUserOrder();
+	public List<UserOrderEntity> getUserOrder(int userId) {
+		return this.shopMapper.getUserOrder(userId);
 	}
 	
 	public boolean isEmailSatisfy(String email) {

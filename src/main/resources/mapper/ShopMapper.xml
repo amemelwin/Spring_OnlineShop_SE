@@ -84,7 +84,7 @@
 			FROM orders o
 			LEFT JOIN order_details d
 			ON o.id = d.order_id
-			WHERE o.user_id = 1) od
+			WHERE o.user_id = #{userId}) od
 		LEFT JOIN items i
 		ON i.id=od.item_id
 		GROUP BY od.order_id,od.date

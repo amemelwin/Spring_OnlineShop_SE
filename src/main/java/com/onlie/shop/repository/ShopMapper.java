@@ -24,7 +24,7 @@ public interface ShopMapper {
 	
 	public void createOrderDetail(@Param("qty") int qty,@Param("orderId") int orderId,@Param("itemId") int itemId);
 	
-	public List<UserOrderEntity> getUserOrder();
+	public List<UserOrderEntity> getUserOrder(@Param("userId") int userId);
 	
 	public boolean isEmailSatisfy(@Param("email") String email);
 }
