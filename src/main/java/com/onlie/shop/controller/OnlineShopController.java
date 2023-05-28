@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +12,7 @@ import com.onlie.shop.entity.UserEntity;
 import com.onlie.shop.form.LoginForm;
 import com.onlie.shop.form.OrderConfirmForm;
 import com.onlie.shop.form.OrderForm;
+import com.onlie.shop.form.SignupForm;
 import com.onlie.shop.service.ShopService;
 
 import jakarta.annotation.PostConstruct;
@@ -27,7 +26,7 @@ public class OnlineShopController {
 	
 	@PostConstruct
 	public void init() {
-//		System.out.println(this.shopService.createOrder());
+		System.out.println(this.shopService.getUserOrder());
 //		log.info("Hello");
 //		System.out.println(this.shopService.getAllItem());
 	}
@@ -65,7 +64,8 @@ public class OnlineShopController {
 	}
 	
 	@GetMapping("/signup")
-	public String signup() {		
+	public String signup(Model model) {
+		model.addAttribute("signupForm",new SignupForm());
 		return "screens/signup";
 	}
 	
@@ -81,22 +81,26 @@ public class OnlineShopController {
 		if (session.getAttribute("Auth") == null) {
 			return "redirect:/login";
 		}
-		model.addAttribute("orderList",orderList.getOrderList());
-		model.addAttribute("divisionList",this.shopService.getAllDivision());
+		OrderConfirmForm orderForm = new OrderConfirmForm();
+		orderForm.setOrderList(orderList.getOrderList());
+		orderForm.setDivisionList(this.shopService.getAllDivision());
+		model.addAttribute("orderConfirmForm",orderForm);
+		//model.addAttribute("orderList",orderList.getOrderList());
+		//model.addAttribute("divisionList",this.shopService.getAllDivision());
 		return "screens/order";
 	}
 	
 	@PostMapping("/order/confirm")
-	public String createOrder( Model model, @Valid @ModelAttribute OrderConfirmForm orderConfirmForm,BindingResult result,HttpSession session) {
+	public String createOrder(  @Valid @ModelAttribute OrderConfirmForm orderConfirmForm,BindingResult result,Model model,HttpSession session) {
 	// Default user before finish Auth
 	if(result.hasErrors()) {
-		for(FieldError error: result.getFieldErrors()) {
-			model.addAttribute(error.getField()+"_error", error.getDefaultMessage());
-			
-		}
-		model.addAttribute("has_error","error");
-		model.addAttribute("orderList",orderConfirmForm.getOrderList());
-		model.addAttribute("divisionList",this.shopService.getAllDivision());
+		orderConfirmForm.validate(model, result);
+		OrderConfirmForm orderForm = new OrderConfirmForm();
+		orderForm.setOrderList(orderConfirmForm.getOrderList());
+		orderForm.setDivisionList(this.shopService.getAllDivision());
+		model.addAttribute("orderConfirmForm",orderForm);
+		//model.addAttribute("orderList",orderConfirmForm.getOrderList());
+		//model.addAttribute("divisionList",this.shopService.getAllDivision());
 		return "screens/order";
 	}
 	UserEntity user = (UserEntity)session.getAttribute("Auth");

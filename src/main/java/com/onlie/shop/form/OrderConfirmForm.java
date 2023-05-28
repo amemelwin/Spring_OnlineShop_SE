@@ -1,5 +1,13 @@
 package com.onlie.shop.form;
 
+import java.util.List;
+
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+
+import com.onlie.shop.entity.DivisionEntity;
+
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -16,6 +24,15 @@ public class OrderConfirmForm {
 	private String receiverAddress;
 	private int divisionId;
 	private String orderList;
-	private int userId; // remove later
-
+	private List<DivisionEntity> divisionList;
+	private int userId;
+	
+	public void validate( Model model,BindingResult result) {
+		for(FieldError error: result.getFieldErrors()) {
+			model.addAttribute(error.getField()+"_error", error.getDefaultMessage());
+			
+		}
+		model.addAttribute("has_error","error");
+		
+	}
 }

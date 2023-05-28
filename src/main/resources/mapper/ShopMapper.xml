@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.onlie.shop.repository.ShopMapper">
-	<resultMap type="com.onlie.shop.entity.ItemEntity" id="itemResultMap">
+	<resultMap type="com.onlie.shop.entity.ItemEntity"
+		id="itemResultMap">
 		<id column="id" property="id"></id>
 		<result column="name" property="name"></result>
 		<result column="price" property="price"></result>
@@ -9,61 +10,83 @@
 		<result column="category_id" property="categoryId"></result>
 	</resultMap>
 
-	<resultMap type="com.onlie.shop.entity.UserEntity" id="userResultMap" >
-		<id column="id" property="id" ></id>
+	<resultMap type="com.onlie.shop.entity.UserEntity"
+		id="userResultMap">
+		<id column="id" property="id"></id>
 		<result column="username" property="username" />
-		<result column="email" property="email" />		
-		<result column="password" property="password" />		
-		<result column="address" property="address" />		
-		<result column="role_id" property="roleId" />		
+		<result column="email" property="email" />
+		<result column="password" property="password" />
+		<result column="address" property="address" />
+		<result column="role_id" property="roleId" />
 	</resultMap>
 	
-	<resultMap type="com.onlie.shop.entity.DivisionEntity" id="divisionResultMap">
+	<select id="isEmailSatisfy" resultType="boolean">
+		SELECT 
+			CASE WHEN COUNT(*) = 0 THEN true
+			ELSE false
+			END
+		FROM users
+		WHERE email=#{email} 
+	</select>
+
+	<resultMap type="com.onlie.shop.entity.DivisionEntity"
+		id="divisionResultMap">
 		<id column="id" property="id"></id>
 		<result column="name" property="name"></result>
 	</resultMap>
-	
-	<!-- 
-		<resultMap type="com.onlie.shop.entity.OrderEntity" id="orderResultMap">
-		<id column="id" property="id"></id>
-		<result column="receiver_name" property="receiverName"></result>
-		<result column="receiver_phone" property="receiverPhone"></result>
-		<result column="receiver_address" property="receiverAddress"></result>
-		<result column="user_id" property="userId"></result>
-		<result column="division_id" property="divisionId"></result>
-	</resultMap>
-	 -->
-	 
-	 <!-- 	<select id="createOrder" resultType="int" >
-		SELECT MAX(id)+1 FROM orders;
-		INSERT INTO orders (id,receiver_name,receiver_phone,receiver_address,user_id,division_id)
-		VALUES
-		((SELECT MAX(id) FROM orders)+1,#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId});
-	</select> -->
+
+	<!-- <resultMap type="com.onlie.shop.entity.OrderEntity" id="orderResultMap"> 
+		<id column="id" property="id"></id> <result column="receiver_name" property="receiverName"></result> 
+		<result column="receiver_phone" property="receiverPhone"></result> <result 
+		column="receiver_address" property="receiverAddress"></result> <result column="user_id" 
+		property="userId"></result> <result column="division_id" property="divisionId"></result> 
+		</resultMap> -->
+
+	<!-- <select id="createOrder" resultType="int" > SELECT MAX(id)+1 FROM orders; 
+		INSERT INTO orders (id,receiver_name,receiver_phone,receiver_address,user_id,division_id) 
+		VALUES ((SELECT MAX(id) FROM orders)+1,#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId}); 
+		</select> -->
 	<select id="getAuthUser" resultMap="userResultMap">
-		SELECT id,username,email,role_id
-		FROM users 
+		SELECT
+		id,username,email,role_id
+		FROM users
 		WHERE email=#{email} AND password=#{password};
 	</select>
 
 	<select id="getAllDivision" resultMap="divisionResultMap">
 		SELECT * FROM divisions;
 	</select>
-	
+
 	<select id="getAllItem" resultMap="itemResultMap">
 		SELECT * FROM items;
-	</select> 
-	<!-- #{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId} --> 
-	<select id="createOrder" resultType="int" >
-		SELECT MAX(id)+1 FROM orders;
-		INSERT INTO orders (id,receiver_name,receiver_phone,receiver_address,user_id,division_id)
+	</select>
+
+	<select id="createOrder" resultType="int">
+		SELECT MAX(id)+1 FROM
+		orders;
+		INSERT INTO orders
+		(id,receiver_name,receiver_phone,receiver_address,user_id,division_id)
 		VALUES
-		((SELECT MAX(id) FROM orders)+1,#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId});
-	</select>	
-	
+		((SELECT MAX(id) FROM
+		orders)+1,#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId});
+	</select>
+
 	<insert id="createOrderDetail">
 		INSERT INTO order_details (quantity,order_id,item_id)
 		VALUES
 		(#{qty},#{orderId},#{itemId});
 	</insert>
+	
+	<select id="getUserOrder" resultType="com.onlie.shop.entity.UserOrderEntity">
+		SELECT od.order_id "id",od.date, SUM(od.qty* i.price) "total"
+		FROM
+			(SELECT o.id "order_id",o.created_at::timestamp::date "date",d.quantity "qty",d.item_id 
+			FROM orders o
+			LEFT JOIN order_details d
+			ON o.id = d.order_id
+			WHERE o.user_id = 1) od
+		LEFT JOIN items i
+		ON i.id=od.item_id
+		GROUP BY od.order_id,od.date
+	</select>
 </mapper>

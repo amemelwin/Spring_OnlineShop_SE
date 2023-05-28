@@ -10,6 +10,7 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 import com.onlie.shop.entity.DivisionEntity;
 import com.onlie.shop.entity.ItemEntity;
 import com.onlie.shop.entity.UserEntity;
+import com.onlie.shop.entity.UserOrderEntity;
 import com.onlie.shop.form.OrderConfirmForm;
 import com.onlie.shop.form.OrderForm;
 import com.onlie.shop.model.ItemOrderModel;
@@ -56,6 +57,13 @@ public class ShopService {
 		return this.shopMapper.getAllDivision();
 	}
 	
+	public List<UserOrderEntity> getUserOrder() {
+		return this.shopMapper.getUserOrder();
+	}
+	
+	public boolean isEmailSatisfy(String email) {
+		return this.shopMapper.isEmailSatisfy(email);
+	}
 
 	
 	

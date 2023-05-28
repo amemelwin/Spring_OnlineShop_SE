@@ -2,7 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <!-- Modal -->
-<div th:fragment="orderConfirmModal( divisionList, orderList,has_error,name_error,phone_error,address_error )" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!-- <div th:fragment="orderConfirmModal( divisionList, orderList,has_error,name_error,phone_error,address_error )" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+ -->
+<div th:fragment="orderConfirmModal" class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header ">
@@ -10,8 +12,8 @@
         <button type="button" class="col-1 btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      	 <form role="form" method="POST" th:action="@{/order/confirm}" >
-      	 	<input type="hidden" name="orderList" th:value="${orderList}">
+      	 <form role="form" method="POST" th:action="@{/order/confirm}" th:object="${orderConfirmForm}" >
+      	 	<input type="hidden"  th:field="*{orderList}">
       		<div class="d-flex flex-row justify-content-between my-3">
   	  			<div class="col-3 ">Item</div>
   	  			<div class="col-4 text-center" id="qty" >Nos</div>
@@ -21,31 +23,32 @@
                   <div class="form-group row py-sm-2 mb-0">
                       <label class="control-label">Receiver Name</label>
                       <div>
-                          <input type="text" class="form-control input-lg" name="receiverName">
+                          <input type="text" class="form-control input-lg" th:field="*{receiverName}">
                       </div>
                       <div class="alert alert-warning" th:if="${receiverName_error}" th:text="${receiverName_error}"></div>
                   </div>
                   <div class="form-group row py-sm-2 mb-0">
                       <label class="control-label">Receiver Phone</label>
                       <div>
-                          <input type="tel" class="form-control input-lg" name="receiverPhone">
+                          <input type="tel" class="form-control input-lg"  th:field="*{receiverPhone}">
                       </div>
                       <div class="alert alert-warning" th:if="${receiverPhone_error}" th:text="${receiverPhone_error}"></div>                      
                   </div>
 		    <div class="form-group py-sm-2 ">
 		    	<label class="control-label">Division</label>
 		    	<div>					    	
-				    <select class="form-select " aria-label="Default select example" name="divisionId"  >
-					  <option th:each="division : ${divisionList}" th:object="${division}" 
-                              th:text="*{name}" th:value="*{id}">
-                      </option>
+				    <select class="form-select " aria-label="Default select example"  th:field="*{divisionId}"  >
+					  <option th:each="division : *{divisionList}"  
+                              th:text="${division.name}" th:value="${division.id}">
+                      </option> 
 					</select>
+                      
 		    	</div>					     						     	
 		    </div>
 		    <div class="form-group row  py-sm-2 mb-0">
 		    	<div>
 		    		<label for="exampleFormControlTextarea1">Delivery Address</label>
-			    	<textarea class="form-control" name="receiverAddress" id="exampleFormControlTextarea1" rows="3"></textarea>
+			    	<textarea class="form-control"  th:field="*{receiverAddress}" id="exampleFormControlTextarea1" rows="3"></textarea>
 		    	</div>
 		    	<div class="alert alert-warning" th:if="${receiverAddress_error}" th:text="${receiverAddress_error}"></div>						    
 			</div>

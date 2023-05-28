@@ -7,6 +7,8 @@ import lombok.Data;
 public class SignupForm {
 	@NotEmpty(message="Email is required")
 	private String email;
+	@NotEmpty(message="User name is required")
+	private String username;
 	@NotEmpty(message="Password is required")
 	private String password;
 	@NotEmpty(message="Confirm Password is required")

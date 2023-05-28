@@ -2,39 +2,83 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="fragments/common :: head('Sign Up')" ></head>
+  <head th:replace="fragments/common :: head('Sign Up')" >
+  
+  </head>
 
   <body>
   	   <!-- Header -->
 	  <div th:replace="fragments/common :: header(Auth=${Auth})"></div>  
 	  <div class="my-5 ">Header</div>
-  	   <form class="mx-auto w-50 border p-4 "  style="border-radius:20px ;">
+  	   <form class="mx-auto w-50 border p-4 "  style="border-radius:20px ;" th:object="${signupForm}">
 	  	<div class=" my-3 h3 text-center">Sign Up Form</div>
 		  <div class="form-group py-2">
 		    <label for="name">Name</label>
-		    <input type="text" class="form-control my-2" id="name" name="name" placeholder="Enter Name">
+		    <input type="text" class="form-control my-2" id="username" th:field="*{username}" placeholder="Enter username">
 		  </div>
 		  <div class="form-group py-3">
 		    <label for="email">Email address</label>
-		    <input type="email" class="form-control my-2" id="email" name="email" placeholder="Enter email">
+		    <input type="email" class="form-control my-2" id="email" th:field="*{email}" placeholder="Enter email" >
+		  	 <!-- Msg for Focus Out -->
+		  	 <div class=" alert alert-warning" id="email_err" style="display:none;"></div>
+		  	 <div class="text-success" id="email_ok" style="display:none;">Email is valid <i class="bi bi-check-lg"></i> </div>
 		  </div>
 		  <div class="form-group py-2">
 		    <label for="address">Address</label>
-		    <input type="text" class="form-control my-2" id="address" name="address" placeholder="Enter address">
+		    <input type="text" class="form-control my-2" id="address" th:field="*{address}" placeholder="Enter address">
 		  </div>
 		  <div class="form-group py-2">
 		    <label for="password">Password</label>
-		    <input type="password" class="form-control my-2" id="password" name="password" placeholder="Password">
+		    <input type="password" class="form-control my-2" id="password" th:field="*{password}" placeholder="Password">
 		  </div>
 		  <div class="form-group py-2">
 		    <label for="confirmPassword">Confirm Password</label>
-		    <input type="password" class="form-control my-2" id="confirmPassword" name="" placeholder="confirmPassword">
+		    <input type="password" class="form-control my-2" id="confirmPassword" th:field="*{confirmPassword}" placeholder="confirmPassword">
 		  </div>
 		  <div class="d-flex flex-row justify-content-center py-2">
 			  <button type="submit" class="btn btn-warning my-2 mx-3 px-3">Cancel</button>
 			  <button type="submit" class="btn btn-primary my-2 px-3">Submit</button>
 		  </div>
 		</form>
+		
+		<script>
+			const validateEmail = (email) => {
+				  return email.match(
+				    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+				  );
+				};
+			
+			$(document).ready(function(){			
+				$("#email").on("focusout",function(){
+					let emailAddress = $("#email").val();
+					let emailMsgDiv = $("#email_err");
+					
+					if( !emailAddress ){
+						emailMsgDiv.text("Email is required");
+					}else if(validateEmail(emailAddress) == null){
+						emailMsgDiv.text("Email is invalid (eg. mgmg@gmail.com)");
+					}else{
+						$.ajax({
+					        url: `/check-email/${emailAddress}`,
+					    })
+					    .then(function(data) {
+					    	// Email is valid 
+					    	$("#email_ok").css("display","block");
+						     emailMsgDiv.css("display","none");
+						     return;
+					    })
+					    .catch(function({responseText}){
+					    	emailMsgDiv.text("Email is already used");
+					    });
+					}
+					emailMsgDiv.css("display","block");
+					$("#email_ok").css("display","none");
+				});
+			});
+			
+			
+		
+		</script>
   	 
   </body>
 </html>
