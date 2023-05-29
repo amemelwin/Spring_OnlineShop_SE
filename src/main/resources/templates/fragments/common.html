@@ -41,6 +41,7 @@
   				<div  th:if="${Auth}" class="text-light mx-3 my-auto"  th:text="${Auth.username}"></div>
   				<a th:href="@{/logout}"  th:if="${Auth}"  class="text-light mx-3 my-auto"  style="text-decoration: none;cursor:pointer;"> <i class="bi bi-box-arrow-right h4 text-danger font-weight-bold"></i> </a>
  				<a th:href="@{/login}" th:if="!${Auth}" class="text-light mx-3 my-auto" style="text-decoration: none;cursor:pointer;">Log In</a>
+ 				<a th:href="@{/signup}" th:if="!${Auth}" class="text-light mx-3 my-auto" style="text-decoration: none;cursor:pointer;">Sign Up</a>
  				<a th:if="${param.query != 'http://localhost:8080/login'}" th:href="@{/login}" th:unless="${Auth}" class="text-decoration-none text-dark" style="cursor:pointer"></a>
 	 		</div> 	 		
  		</div>

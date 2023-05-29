@@ -89,4 +89,11 @@
 		ON i.id=od.item_id
 		GROUP BY od.order_id,od.date
 	</select>
+	
+	<insert id="createUser" >
+		INSERT INTO users(username,email,password,address)
+		VALUES
+		(#{username},#{email},#{password},#{address});
+	
+	</insert>
 </mapper>

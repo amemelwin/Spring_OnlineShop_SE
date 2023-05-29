@@ -10,6 +10,7 @@ import com.onlie.shop.entity.ItemEntity;
 import com.onlie.shop.entity.UserEntity;
 import com.onlie.shop.entity.UserOrderEntity;
 import com.onlie.shop.form.OrderConfirmForm;
+import com.onlie.shop.form.SignupForm;
 
 @Mapper
 public interface ShopMapper {
@@ -27,4 +28,6 @@ public interface ShopMapper {
 	public List<UserOrderEntity> getUserOrder(@Param("userId") int userId);
 	
 	public boolean isEmailSatisfy(@Param("email") String email);
+	
+	public void createUser(SignupForm signupForm);
 }

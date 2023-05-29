@@ -68,6 +68,18 @@ public class OnlineShopController {
 		return "screens/signup";
 	}
 	
+	@PostMapping("/signup")
+	public String signup(@Valid @ModelAttribute SignupForm signupForm,BindingResult result,Model model,HttpSession session) {
+		boolean isPasswordSatisfy = this.shopService.isPasswordSatisfy(signupForm.getPassword(), signupForm.getConfirmPassword(), model);
+		boolean isEmailSatisfy = this.shopService.isEmailSatisfy(signupForm.getEmail());
+		if(!isEmailSatisfy || !isPasswordSatisfy || result.hasErrors()) {
+			return "screens/signup";		
+		}
+		session.setAttribute("email", signupForm.getEmail());
+		this.shopService.createUser(signupForm);
+		return "redirect:/";
+	}
+	
 	@GetMapping("/")
 	public String index(Model model,HttpSession session) {
 		model.addAttribute("Auth", session.getAttribute("Auth"));

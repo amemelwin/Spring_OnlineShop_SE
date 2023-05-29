@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.ui.Model;
 
 import com.onlie.shop.entity.DivisionEntity;
 import com.onlie.shop.entity.ItemEntity;
@@ -13,6 +14,7 @@ import com.onlie.shop.entity.UserEntity;
 import com.onlie.shop.entity.UserOrderEntity;
 import com.onlie.shop.form.OrderConfirmForm;
 import com.onlie.shop.form.OrderForm;
+import com.onlie.shop.form.SignupForm;
 import com.onlie.shop.model.ItemOrderModel;
 import com.onlie.shop.repository.ShopMapper;
 
@@ -64,8 +66,17 @@ public class ShopService {
 	public boolean isEmailSatisfy(String email) {
 		return this.shopMapper.isEmailSatisfy(email);
 	}
-
 	
+	public void createUser(SignupForm signupForm) {
+		this.shopMapper.createUser(signupForm);
+	};
 	
-
+	public boolean isPasswordSatisfy(String password,String confirmPassword,Model model) {
+		if(password.equals(confirmPassword)) return true;
+		else {
+			model.addAttribute("confirm_err","Password and confirm password does not match!");
+			return false;
+		}
+	}
+	
 }
