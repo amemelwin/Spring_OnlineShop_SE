@@ -2,6 +2,7 @@ package com.onlie.shop.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import com.onlie.shop.entity.DivisionEntity;
 import com.onlie.shop.entity.ItemEntity;
 import com.onlie.shop.entity.UserEntity;
+import com.onlie.shop.entity.UserOrderDetailEntity;
 import com.onlie.shop.entity.UserOrderEntity;
 import com.onlie.shop.form.OrderConfirmForm;
 import com.onlie.shop.form.OrderForm;
@@ -77,6 +79,10 @@ public class ShopService {
 			model.addAttribute("confirm_err","Password and confirm password does not match!");
 			return false;
 		}
+	}
+	
+	public List<UserOrderDetailEntity> getUserOrderDetail(int orderId) {
+		return this.shopMapper.getUserOrderDetail(orderId);
 	}
 	
 }

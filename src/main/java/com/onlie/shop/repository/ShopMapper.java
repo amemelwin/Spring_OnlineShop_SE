@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.onlie.shop.entity.DivisionEntity;
 import com.onlie.shop.entity.ItemEntity;
 import com.onlie.shop.entity.UserEntity;
+import com.onlie.shop.entity.UserOrderDetailEntity;
 import com.onlie.shop.entity.UserOrderEntity;
 import com.onlie.shop.form.OrderConfirmForm;
 import com.onlie.shop.form.SignupForm;
@@ -30,4 +31,6 @@ public interface ShopMapper {
 	public boolean isEmailSatisfy(@Param("email") String email);
 	
 	public void createUser(SignupForm signupForm);
+	
+	public List<UserOrderDetailEntity> getUserOrderDetail(@Param("orderId") int orderId);
 }

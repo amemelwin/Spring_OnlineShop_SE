@@ -46,6 +46,8 @@
 		INSERT INTO orders (id,receiver_name,receiver_phone,receiver_address,user_id,division_id) 
 		VALUES ((SELECT MAX(id) FROM orders)+1,#{receiverName},#{receiverPhone},#{receiverAddress},#{userId},#{divisionId}); 
 		</select> -->
+		
+
 	<select id="getAuthUser" resultMap="userResultMap">
 		SELECT
 		id,username,email,role_id
@@ -88,6 +90,30 @@
 		LEFT JOIN items i
 		ON i.id=od.item_id
 		GROUP BY od.order_id,od.date
+	</select>
+	
+	<!-- 	//SELECT  o.created_at::timestamp::date date,i.name,i.photo_url,d.quantity,i.price,i.price*d.quantity total
+	//FROM orders o, order_details d , items i
+	//WHERE o.id = d.order_id AND i.id = d.item_id AND o.id = 1;
+	
+	
+	 -->
+	 
+	<resultMap type="com.onlie.shop.entity.UserOrderDetailEntity" id="orderDetailResultMap">
+		<id column="id" property="id"></id>
+		<result column="date" property="date"></result>
+		<result column="item_name" property="itemName"></result>
+		<result column="photo_url" property="photoUrl"></result>
+		<result column="quantity" property="quantity"></result>
+		<result column="price" property="price"></result>
+		<result column="total" property="total"></result>
+	</resultMap>
+	
+	<select id="getUserOrderDetail" resultMap="orderDetailResultMap">
+		SELECT  d.id,o.created_at::timestamp::date date,i.name item_name,i.photo_url,d.quantity,i.price,i.price*d.quantity total
+		FROM orders o, order_details d , items i
+		WHERE o.id = d.order_id AND i.id = d.item_id AND o.id = 1
+		ORDER BY d.id;
 	</select>
 	
 	<insert id="createUser" >

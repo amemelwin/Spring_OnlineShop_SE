@@ -16,7 +16,8 @@
 			<div class="col-3 text-center  py-2">Total</div>
 			<div class="col-3 d-flex flex-row justify-content-end py-2">Action</div>	
 		</div>
-		<a th:href="@{/order/detail/{id}(id=${order.id}) }" th:each="order: ${orderHistoryList}" th:object="${order}" class="row text-dark" style="cursor:pointer;text-decoration:none;">		
+		<!-- @{/order/detail/{id}(id=${order.id}) } -->
+		<a th:href="@{/order/detail/{id}(id=${order.id})}" th:each="order: ${orderHistoryList}" th:object="${order}" class="row text-dark" style="cursor:pointer;text-decoration:none;">		
 			<span class="col-2 py-2" th:text="*{id}"></span>
 			<span class="col-4 text-center  py-2"  th:text="*{date}"></span>
 			<span class="col-3 text-center  py-2"  th:text="*{#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')+' Ks'}"></span>

@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.onlie.shop.entity.UserEntity;
@@ -127,11 +128,15 @@ public class OnlineShopController {
 		if(user == null) {
 			return "redirect:/login";
 		}
+		System.out.println(this.shopService.getUserOrder(user.getId()));
 		model.addAttribute("orderHistoryList",this.shopService.getUserOrder(user.getId()));
 		return "screens/order_history";
 	}
-	
-	
-	
-
+	// /order/detail/{id}(id=${order.id}) 
+	@GetMapping("/order/detail/{id}")
+	public String getOrderDetail(@PathVariable("id") int orderId,Model model) {	
+		model.addAttribute("orderDetailList",this.shopService.getUserOrderDetail(orderId));
+		System.out.println(this.shopService.getUserOrderDetail(orderId));		
+		return "screens/order_detail";
+	}
 }
