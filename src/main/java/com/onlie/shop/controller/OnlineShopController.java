@@ -128,12 +128,15 @@ public class OnlineShopController {
 		if(user == null) {
 			return "redirect:/login";
 		}
-		System.out.println(this.shopService.getUserOrder(user.getId()));
 		model.addAttribute("orderHistoryList",this.shopService.getUserOrder(user.getId()));
 		return "screens/order_history";
 	}
 	@GetMapping("/order/detail/{id}")
-	public String getOrderDetail(@PathVariable("id") int orderId,Model model) {	
+	public String getOrderDetail(@PathVariable("id") int orderId,Model model,HttpSession session) {	
+		UserEntity user = (UserEntity)session.getAttribute("Auth");
+		if(user == null) {
+			return "redirect:/login";
+		}
 		model.addAttribute("orderDetailList",this.shopService.getUserOrderDetail(orderId));
 		return "screens/order_detail";
 	}

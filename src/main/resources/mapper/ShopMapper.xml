@@ -112,7 +112,7 @@
 	<select id="getUserOrderDetail" resultMap="orderDetailResultMap">
 		SELECT  d.id,o.created_at::timestamp::date date,i.name item_name,i.photo_url,d.quantity,i.price,i.price*d.quantity total
 		FROM orders o, order_details d , items i
-		WHERE o.id = d.order_id AND i.id = d.item_id AND o.id = 1
+		WHERE o.id = d.order_id AND i.id = d.item_id AND o.id = #{orderId}
 		ORDER BY d.id;
 	</select>
 	
