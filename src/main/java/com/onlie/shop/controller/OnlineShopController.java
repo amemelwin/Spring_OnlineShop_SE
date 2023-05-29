@@ -97,8 +97,6 @@ public class OnlineShopController {
 		orderForm.setOrderList(orderList.getOrderList());
 		orderForm.setDivisionList(this.shopService.getAllDivision());
 		model.addAttribute("orderConfirmForm",orderForm);
-		//model.addAttribute("orderList",orderList.getOrderList());
-		//model.addAttribute("divisionList",this.shopService.getAllDivision());
 		return "screens/order";
 	}
 	
