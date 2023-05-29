@@ -132,11 +132,9 @@ public class OnlineShopController {
 		model.addAttribute("orderHistoryList",this.shopService.getUserOrder(user.getId()));
 		return "screens/order_history";
 	}
-	// /order/detail/{id}(id=${order.id}) 
 	@GetMapping("/order/detail/{id}")
 	public String getOrderDetail(@PathVariable("id") int orderId,Model model) {	
 		model.addAttribute("orderDetailList",this.shopService.getUserOrderDetail(orderId));
-		System.out.println(this.shopService.getUserOrderDetail(orderId));		
 		return "screens/order_detail";
 	}
 }
