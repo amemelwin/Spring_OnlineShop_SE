@@ -11,7 +11,7 @@
   	  <div class="my-5 py-5"></div>	
   	  
   	  <div class="mx-auto w-50 mt-5">
-  		<div class="d-flex flex-row">
+  		<div class="d-flex flex-row" style="font-weight:bold;">
 			<div class="col-1" >#id</div>
 			<div class="col-4 text-center">Name</div>
 			<div class="col-2 text-center">Price</div>
@@ -21,9 +21,9 @@
 		<div class="d-flex flex-row" th:each="orderDetail,iterStat :${orderDetailList}" th:object="${orderDetail}">
 			<div class="col-1 py-2" th:text="${iterStat.index+1}"></div>
 			<div class="col-4 text-center py-2" th:text="*{itemName}"></div>
-			<div class="col-2 text-center py-2" th:text="*{price}"></div>
+			<div class="col-2 text-center py-2" th:text="*{#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')+' Ks'}"></div>
 			<div class="col-3 text-center py-2" th:text="*{quantity}"></div>
-			<div class="col-2 d-flex flex-row justify-content-end" th:text="*{total}"></div>
+			<div class="col-2 d-flex flex-row justify-content-end" th:text="*{#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')+' Ks'}"></div>
 		</div>  		
   			
   	  </div>
