@@ -12,6 +12,7 @@ import com.onlie.shop.entity.UserOrderDetailEntity;
 import com.onlie.shop.entity.UserOrderEntity;
 import com.onlie.shop.form.OrderConfirmForm;
 import com.onlie.shop.form.SignupForm;
+import com.onlie.shop.model.admin.OrderByDivisionModel;
 
 @Mapper
 public interface ShopMapper {
@@ -33,4 +34,8 @@ public interface ShopMapper {
 	public void createUser(SignupForm signupForm);
 	
 	public List<UserOrderDetailEntity> getUserOrderDetail(@Param("orderId") int orderId);
+	
+	
+	//Admin
+	public List<OrderByDivisionModel> getAllUserOrders();
 }

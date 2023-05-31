@@ -38,8 +38,7 @@ public class OnlineShopController {
 		return "screens/login";
 	}
 	
-	
-	@PostMapping(value="/login",params="confirm")
+	@PostMapping("/login")
 	public String login(Model model,@Valid @ModelAttribute("loginForm") LoginForm loginForm,BindingResult result,HttpSession session) {
 		if(result.hasErrors()) {
 			return "screens/login";
@@ -48,18 +47,17 @@ public class OnlineShopController {
 		
 		if (authUser != null) {
 			session.setAttribute("Auth", authUser);
-			return "redirect:/";
+			return authUser.getRoleId()==1? "redirect:/admin/":"redirect:/";
 		} else {
 			model.addAttribute("login_error", "username or password does not match!");
 			return "screens/login";
-		}	
-
-		
+		}
 	}
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.setAttribute("Auth", null);
+		session.setAttribute("msg","logout");
 		return "redirect:/";
 	}
 	
@@ -85,6 +83,10 @@ public class OnlineShopController {
 	public String index(Model model,HttpSession session) {
 		model.addAttribute("Auth", session.getAttribute("Auth"));
 		model.addAttribute("items",this.shopService.getAllItem());
+		if(session.getAttribute("msg") != null) {			
+			model.addAttribute("msg",session.getAttribute("msg"));
+			session.removeAttribute("msg");
+		}
 		return "screens/index";
 	}
 	
@@ -109,14 +111,12 @@ public class OnlineShopController {
 			orderForm.setOrderList(orderConfirmForm.getOrderList());
 			orderForm.setDivisionList(this.shopService.getAllDivision());
 			model.addAttribute("orderConfirmForm",orderForm);
-			//model.addAttribute("orderList",orderConfirmForm.getOrderList());
-			//model.addAttribute("divisionList",this.shopService.getAllDivision());
 			return "screens/order";
 		}	
-		
 		UserEntity user = (UserEntity)session.getAttribute("Auth");
 		orderConfirmForm.setUserId(user.getId());
 		this.shopService.createOrder(orderConfirmForm);
+		session.setAttribute("msg","ordersuccess");
 		return "redirect:/";
 	}
 	
@@ -126,6 +126,7 @@ public class OnlineShopController {
 		if(user == null) {
 			return "redirect:/login";
 		}
+		model.addAttribute("Auth", user);
 		model.addAttribute("orderHistoryList",this.shopService.getUserOrder(user.getId()));
 		return "screens/order_history";
 	}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlie.shop.repository.admin.AdminMapper">
+	<resultMap type="com.onlie.shop.model.admin.OrderByDivisionModel" id="orderResultMap">
+		<id column="id" property="orderId"></id>
+		<result column="name" property="divisionName"></result>
+		<result column="date" property="date"></result>
+		<result column="total_order" property="totalOrder"></result>
+	</resultMap>
+	<!-- d.name "division_name",o.created_at::timestamp::date "date",COUNT(*) "total_order" -->
+	<select id="getAllUserOrders" resultMap="orderResultMap">
+		SELECT DISTINCT o.id, d.name,o.created_at::timestamp::date "date", COUNT(*) "total_order"
+		FROM orders o ,divisions d, order_details od
+		WHERE o.division_id = d.id 
+		AND o.id = od.order_id
+		GROUP BY d.name,o.created_at,o.id;
+	</select>
+</mapper>

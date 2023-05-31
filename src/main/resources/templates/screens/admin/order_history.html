@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/common :: head('Order History')" ></head>
+
+<body>
+  	<!-- Header -->
+	<div th:replace="fragments/common :: header(Auth=${Auth})"></div>  
+	<div class="my-5 py-5"></div>	
+	  
+	<div class="w-50 mx-auto">
+		 <div class="row" style="font-weight:bold;">		
+			<div class="col-2 py-2">#orderId</div>
+			<div class="col-3 text-center  py-2">Date</div>
+			<div class="col-4 text-center  py-2">Division Name</div>
+			<div class="col-2 d-flex flex-row justify-content-center py-2">Total Order</div>	
+			<div class="col-1 py-2"></div>
+		</div>
+		 <a th:href="@{/order/detail/{id}(id=${order.orderId})}" th:each="order: ${allUserOrderHistoryList}" th:object="${order}" class="row text-dark" style="cursor:pointer;text-decoration:none;">		
+			<span class="col-2 py-2" th:text="*{orderId}"></span>
+			<span class="col-3 text-center  py-2"  th:text="*{date}"></span>
+			<span class="col-4 text-center  py-2"  th:text="*{divisionName}"></span>
+			<span class="col-2 py-2 d-flex flex-row justify-content-start" th:text="*{totalOrder}"></span>
+			<span class="col-1 py-2 d-flex flex-row justify-content-start" ><i class="bi bi-chevron-right text-secondary h4"></i></span>
+		</a>
+	</div>
+	
+</body>
+</html>

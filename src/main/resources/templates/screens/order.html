@@ -8,9 +8,9 @@
   	   <!-- reciever -->
   	   <div class="has_error" th:if="${has_error}" th:text="${has_error}"></div>  	   
   
-  	   <!-- Header -->
-	  <div th:replace="fragments/header :: header"></div>  
-  	  
+  	   <!-- Header<div th:replace="fragments/common :: header(Auth=${Auth})"></div> -->  
+	  
+  	  <div th:replace="fragments/header :: header"></div> 
   	  <!-- redirect home-->
   	  <form th:action="@{/}" class="my-5">
   	  	<button type="submit" id="home" class="btn btn-outline"></button>
@@ -44,12 +44,8 @@
   	  				<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create order</button>
   	  			</div>
   	  		</div>
-  	  		
   	  		<!-- OrderConfirmModal -->
   	  		<div th:replace="fragments/modal/orderConfirmModal::orderConfirmModal"></div>
-  	  		
-  	
-			
   	  </div>
   	  <script>
   	    const orderRowInject =  (orderList)=>{
@@ -69,7 +65,15 @@
   	    	
   	    }
   	  	const tableInject = (orderList)=>{
-  	  	const tableBody = $("#cartList");
+  	  	 	// to store orderlist
+  	  	    localStorage.setItem("cart",JSON.stringify(orderList));
+  	  		
+  	  		// Redirect Home page when there is no item
+  	  		//if(orderList.length === 0){  	  			
+  	  		//	$("#home").trigger('click');
+  	  		//	return;
+  	  		//}
+	  	  	const tableBody = $("#cartList");
   	  		let html = "";
   	  		orderList.map(({id,name,price,qty},i)=>{
   	  			html += `
@@ -87,10 +91,10 @@
 		  	  			<div class="col-2 d-flex flex-row justify-content-end my-auto">${(qty*price).toLocaleString()} Ks</div>
 		  	  		</div>
   	  			`;
-  	  			
   	  		});
   	  	    $(".total").text( orderList.reduce((total,{qty,price})=>total+(qty*price),0).toLocaleString() );	
   	  		$("#qty").text(orderList.length);
+  	  		$("#badgeCount").text(orderList.length);
   	  	    tableBody.html(html);
   	  	}
    	  	const minusQty = (minusId)=>{
@@ -107,12 +111,7 @@
  	  					return item;
  	  				}
  	  			})
-  	  		}
-  	  		// Redirect Home page when there is no item
-  	  		if(updatedOrderList.length === 0){  	  			
-  	  			$("#home").trigger('click');
-  	  			return;
-  	  		}
+  	  		}  	  		
   	  		// Update table
   	  		tableInject(updatedOrderList);
   	  		
@@ -136,9 +135,6 @@
   	  		tableInject(updatedOrderList);
   	  		// Update Input
   	  		$("input[name='orderList']").val( JSON.stringify(updatedOrderList) );
-  	  		
-  	  		
-  	  		
   	  	}
   	  	
   	  	$(document).ready(function(){
@@ -149,8 +145,9 @@
   	  		
   	  		// initail create table
   	  		let orderList = JSON.parse( $("input[name='orderList']").val() );
+  	  		console.log(orderList);
   	  		if(orderList.length === 0){
-  	  			$("#home").trigger('click');
+  	  			//$("#home").trigger('click');
   	  		}else{  	  			
 	  	  		tableInject(orderList);
   	  		}
