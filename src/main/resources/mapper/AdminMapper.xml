@@ -13,6 +13,6 @@
 		FROM orders o ,divisions d, order_details od
 		WHERE o.division_id = d.id 
 		AND o.id = od.order_id
-		GROUP BY d.name,o.created_at,o.id;
+		GROUP BY d.name,o.created_at,o.id
 	</select>
 </mapper>
