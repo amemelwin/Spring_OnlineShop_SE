@@ -6,18 +6,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.onlie.shop.model.admin.OrderByDivisionModel;
-import com.onlie.shop.repository.admin.AdminMapper;
-
+import com.onlie.shop.entity.DivisionDetailEntity;
+import com.onlie.shop.entity.DivisionOrderEntity;
+import com.onlie.shop.repository.AdminShopMapper;
 
 @Service
 public class AdminService {
 	
 	@Autowired
-	AdminMapper adminMapper;
+	AdminShopMapper adminShopMapper;
 	
-	public List<OrderByDivisionModel> getAllUserOrders(){
-		return this.adminMapper.getAllUserOrders();
+	public List<DivisionOrderEntity> getDivisionOrder(){
+		return this.adminShopMapper.getDivisionOrder();
+	}
+	
+	public List<DivisionDetailEntity> getDivisionOrderDetail(int divisionId){
+		return this.adminShopMapper.getDivisionOrderDetail(divisionId);
 	}
 	
 	

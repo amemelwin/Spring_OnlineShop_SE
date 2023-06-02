@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.onlie.shop.repository.AdminShopMapper">
+	<resultMap type="com.onlie.shop.entity.DivisionOrderEntity" id="orderResultMap">
+		<id column="division_id" property="divisionId"></id>
+		<result column="division_name" property="divisionName"></result>
+		<result column="total_order" property="totalOrder"></result>
+	</resultMap>
+	<resultMap type="com.onlie.shop.entity.DivisionDetailEntity" id="divisionDetailResultMap">
+		<id column="division_id" property="divisionId"></id>
+		<result column="receiver_name" property="receiverName"></result>
+		<result column="receiver_phone" property="receiverPhone"></result>
+		<result column="receiver_address" property="receiverAddress"></result>
+	</resultMap>	
+	<select id="getDivisionOrder"  resultMap="orderResultMap">
+		SELECT o.division_id,
+		(SELECT d.name division_name FROM divisions d WHERE d.id = o.division_id  ),
+		COUNT(*) total_order
+		FROM orders o
+		GROUP BY o.division_id
+		ORDER BY o.division_id
+	</select>
+	
+	<select id="getDivisionOrderDetail" resultMap="divisionDetailResultMap">
+		SELECT division_id,receiver_name,receiver_phone,receiver_address
+		FROM orders
+		WHERE division_id=#{divisionId};  
+	</select>
+</mapper>
