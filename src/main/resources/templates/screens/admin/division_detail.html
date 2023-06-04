@@ -10,17 +10,17 @@
 	<div class="my-5 py-5"></div>	
 	<div class="mx-auto w-50 mt-5">
   		<div class="d-flex flex-row" style="font-weight:bold;">
-			<div class="col-1" >#id</div>
+			<div class="col-1" >#OrderId</div>
 			<div class="col-4 text-center">Receiver Name</div>
 			<div class="col-2 text-center">Receiver Address</div>
 			<div class="col-3 text-center">Receiver Phone</div>
 		</div>
-		<div class="d-flex flex-row" th:each="divisionOrderDetail :${DivisionOrderDetailList}" th:object="${orderDetail}">
-			<div class="col-1 py-2" th:text="*{divisionId}"></div>
-			<div class="col-4 text-center py-2" th:text="*{receiverName}"></div>
-			<div class="col-2 text-center py-2" th:text="*{receiverAddress}"></div>
-			<div class="col-3 text-center py-2" th:text="*{receiverPhone}"></div>
-		</div> 
+		<a th:href="@{/admin/order-detail/{id}(id=*{orderId})}" class="d-flex flex-row" th:each="divisionOrderDetail :${DivisionOrderDetailList}" th:object="${divisionOrderDetail}">
+			<span class="col-1 py-2" th:text="*{orderId}"></span>
+			<span class="col-4 text-center py-2" th:text="*{receiverName}"></span>
+			<span class="col-2 text-center py-2" th:text="*{receiverAddress}"></span>
+			<span class="col-3 text-center py-2" th:text="*{receiverPhone}"></span>
+		</a> 
   	  </div>
   </body>
 </html>

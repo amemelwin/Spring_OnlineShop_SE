@@ -24,6 +24,7 @@ public class AdminController {
 	
 	@PostConstruct
 	public void init() {
+		System.out.println(this.shopService.getUserOrderDetail(1));
 	}
 	
 	@GetMapping("/")
@@ -37,7 +38,7 @@ public class AdminController {
 		return "screens/admin/index";
 	}
 	//http://localhost:8080/admin/order/history
-	@GetMapping("/order/history")
+	@GetMapping("/division-order")
 	public String orderHistory(Model model,HttpSession session) {
 		UserEntity user = (UserEntity)session.getAttribute("Auth");
 		if( user != null  && user.getRoleId() == 1 ) {
@@ -48,7 +49,7 @@ public class AdminController {
 		
 	}
 	
-	@GetMapping("/order/detail/{id}")
+	@GetMapping("/division-order/{id}")
 	public String divisionDetail(@PathVariable("id") int divisionId, Model model,HttpSession session) {
 		System.out.println(divisionId);
 		UserEntity user = (UserEntity)session.getAttribute("Auth");
@@ -58,8 +59,14 @@ public class AdminController {
 		model.addAttribute("orderDetailList",this.shopService.getUserOrderDetail(divisionId));
 
 		System.out.println("HEY"+this.adminservice.getDivisionOrderDetail(divisionId));
-		//model.addAttribute("DivisionOrderDetailList",this.adminservice.getDivisionOrderDetail(divisionId));
+		model.addAttribute("DivisionOrderDetailList",this.adminservice.getDivisionOrderDetail(divisionId));
 		return "screens/admin/division_detail";
+	}
+	
+	@GetMapping("/order-detail/{id}")
+	public String orderDetail(@PathVariable("id") int orderId,Model model,HttpSession session) {
+		model.addAttribute("orderDetailList",this.shopService.getUserOrderDetail(orderId));
+		return "screens/admin/order_detail";
 	}
 
 }

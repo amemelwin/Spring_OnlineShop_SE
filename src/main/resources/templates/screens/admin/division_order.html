@@ -19,13 +19,12 @@
 		<!-- 		
 		<a th:href="@{/order/detail/{id}(id=${order.id})}" th:each="order: ${orderHistoryList}" th:object="${order}" class="row text-dark" style="cursor:pointer;text-decoration:none;">		
 		 -->
-		 <a th:href="@{/order/division/detail/{divisionId}(divisionId=${divisionOrder.divisionId})}" th:each="divisionOrder: ${divisionOrderList}" th:object="${divisionOrder}" class="row text-dark" style="cursor:pointer;text-decoration:none;">		
+		 <a th:href="@{/admin/division-order/{id}(id=${divisionOrder.divisionId})}" th:each="divisionOrder: ${divisionOrderList}" th:object="${divisionOrder}" class="row text-dark" style="cursor:pointer;text-decoration:none;">		
 			<span class="col-2 py-2" th:text="*{divisionId}"></span>
 			<span class="col-4 text-center  py-2"  th:text="*{divisionName}"></span>
 			<span class="col-2 py-2 d-flex flex-row justify-content-start" th:text="*{totalOrder}"></span>
 			<span class="col-1 py-2 d-flex flex-row justify-content-start" ><i class="bi bi-chevron-right text-secondary h4"></i></span>
 		</a>
 	</div>
-	
 </body>
 </html>

@@ -7,7 +7,7 @@
 		<result column="total_order" property="totalOrder"></result>
 	</resultMap>
 	<resultMap type="com.onlie.shop.entity.DivisionDetailEntity" id="divisionDetailResultMap">
-		<id column="division_id" property="divisionId"></id>
+		<id column="id" property="orderId"></id>
 		<result column="receiver_name" property="receiverName"></result>
 		<result column="receiver_phone" property="receiverPhone"></result>
 		<result column="receiver_address" property="receiverAddress"></result>
@@ -22,8 +22,9 @@
 	</select>
 	
 	<select id="getDivisionOrderDetail" resultMap="divisionDetailResultMap">
-		SELECT division_id,receiver_name,receiver_phone,receiver_address
+		SELECT id,receiver_name,receiver_phone,receiver_address
 		FROM orders
 		WHERE division_id=#{divisionId};  
 	</select>
+	
 </mapper>

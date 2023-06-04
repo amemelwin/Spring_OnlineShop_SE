@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class DivisionDetailEntity {
-	private int divisionId;
+	private int orderId;
 	private String receiverName;
 	private String receiverPhone;
 	private String receiverAddress;
